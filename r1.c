@@ -309,7 +309,7 @@ r1_search_result_process(struct gattc_search_res_evt_param *search_res)
                                            , &count);
     if (status != ESP_OK || count != REPORT_CHAR_COUNT)
     {
-        ESP_LOGE(TAG, "report char isn't found");
+        ESP_LOGE(TAG, "report char isn't found: %d err id", status);
         return;
     }
 
@@ -439,14 +439,16 @@ r1_gattc_cb(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb
             gl_gattc_if = gattc_if;
             break;
 
-        /* As physical connection is done store connection parameters and
-         * start service search process to obtain GATT info ------------------ */
+        /* As physical connection is done store connection parameters -------- */
         case ESP_GATTC_CONNECT_EVT:
             ESP_LOGI(TAG, "connection is done: %04x connection id", gl_conn_id);
 
             gl_conn_id = param->connect.conn_id;
             memcpy(gl_remote_bda, param->connect.remote_bda, ESP_BD_ADDR_LEN);
+            break;
 
+        /* Start service parsing after service discovery is complete --------- */
+        case ESP_GATTC_DIS_SRVC_CMPL_EVT:
             esp_ble_gattc_search_service(gl_gattc_if, gl_conn_id, NULL);
             break;
 
