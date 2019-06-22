@@ -1,0 +1,9 @@
+config MAGICSEE_R1_CONTROLLER
+    bool "Magicsee R1 Bluetooth controller"
+    default "n"
+    depends on BT_ENABLED
+    depends on BLUEDROID_ENABLED
+    depends on BTDM_CONTROLLER_MODE_BLE_ONLY || BTDM_CONTROLLER_MODE_BTDM
+    depends on !BLE_SMP_MODULE
+        help
+        Enable Magicsee R1 Bluetooth controller device.
