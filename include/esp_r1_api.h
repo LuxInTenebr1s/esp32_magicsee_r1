@@ -93,7 +93,7 @@ esp_err_t esp_r1_enable(void);
 /**
  * @brief Register pointer device callback function
  */
-esp_err_t esp_r1_pointerregister_callback(esp_r1_pointer_cb_t cb);
+esp_err_t esp_r1_pointer_register_callback(esp_r1_pointer_cb_t cb);
 
 /**
  * @brief Register keyboard device callback function
