@@ -90,6 +90,12 @@ typedef void (*esp_r1_pointer_cb_t)(esp_r1_pointer_data_t*);
 
 typedef void (*esp_r1_keyboard_cb_t)(esp_r1_keyboard_data_t*);
 
+enum esp_r1_device_event_e {
+	R1_EVENT_CONNECTED,
+	R1_EVENT_DISCONNECTED,
+};
+typedef void (*esp_r1_device_event_cb_t)(enum esp_r1_device_event_e event);
+
 /**
  * @brief Initialize BLE and Bluedroid resources
  */
@@ -109,6 +115,11 @@ esp_err_t esp_r1_pointer_register_callback(esp_r1_pointer_cb_t cb);
  * @brief Register keyboard device callback function
  */
 esp_err_t esp_r1_keyboard_register_callback(esp_r1_keyboard_cb_t cb);
+
+/**
+ * @brief Register device state callback
+ */
+esp_err_t esp_r1_device_event_register_callback(esp_r1_device_event_cb_t cb);
 
 /**
  * @brief Get event name by it's ID (send in keyboard data structure)

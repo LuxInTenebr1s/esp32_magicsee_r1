@@ -172,6 +172,21 @@ r1_keyboard_process_event_default(esp_r1_keyboard_data_t *data)
 static esp_r1_keyboard_cb_t gl_kbd_cb = r1_keyboard_process_event_default;
 
 static void
+r1_device_event_default(enum esp_r1_device_event_e event)
+{
+    switch (event) {
+        case R1_EVENT_DISCONNECTED:
+            ESP_LOGI(TAG, "device event: disconnected");
+            break;
+
+        case R1_EVENT_CONNECTED:
+            ESP_LOGI(TAG, "device event: connected");
+            break;
+    }
+}
+static esp_r1_device_event_cb_t gl_dev_cb = r1_device_event_default;
+
+static void
 r1_gap_search_process(struct ble_scan_result_evt_param *scan_rst)
 {
     uint8_t *adv_name = NULL;
@@ -448,6 +463,8 @@ r1_gattc_cb(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb
 
             gl_conn_id = param->connect.conn_id;
             memcpy(gl_remote_bda, param->connect.remote_bda, ESP_BD_ADDR_LEN);
+            if (gl_dev_cb)
+                gl_dev_cb(R1_EVENT_CONNECTED);
             break;
 
         /* Start service parsing after service discovery is complete --------- */
@@ -527,6 +544,8 @@ r1_gattc_cb(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb
                 ESP_LOGI(TAG, "trying to reconnect");
                 esp_ble_gap_set_scan_params(&ble_scan_params);
             }
+            if (gl_dev_cb)
+                gl_dev_cb(R1_EVENT_DISCONNECTED);
             break;
 
         /* For debug purposes print all unhandled event codes ---------------- */
@@ -621,6 +640,18 @@ esp_err_t esp_r1_keyboard_register_callback(esp_r1_keyboard_cb_t cb)
     }
 
     gl_kbd_cb = cb;
+    return ESP_OK;
+}
+
+esp_err_t esp_r1_device_event_register_callback(esp_r1_device_event_cb_t cb)
+{
+    if (cb == NULL)
+    {
+        gl_dev_cb = r1_device_event_default;
+        return ESP_FAIL;
+    }
+
+    gl_dev_cb = cb;
     return ESP_OK;
 }
 
