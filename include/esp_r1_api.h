@@ -1,6 +1,10 @@
 #ifndef __ESP_R1_API_H__
 #define __ESP_R1_API_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define R1_EVENTS_TABLE       \
     X(R1_BUTTON1)             \
     X(R1_BUTTON2)             \
@@ -100,5 +104,9 @@ esp_err_t esp_r1_keyboard_register_callback(esp_r1_keyboard_cb_t cb);
  * @brief Get event name by it's ID (send in keyboard data structure)
  */
 const char* esp_r1_event_name_get_by_id(esp_r1_key_id_t id);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif
