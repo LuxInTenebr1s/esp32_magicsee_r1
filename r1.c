@@ -184,8 +184,11 @@ r1_gap_search_process(struct ble_scan_result_evt_param *scan_rst)
     if (adv_name == NULL || adv_name_len == 0)
         return;
 
+    char name[32];
+    strncpy(name, (char *)adv_name, adv_name_len);
+
     /* Find device MAC-address to establish connection by device name */
-    if (strncmp((char *)adv_name, remote_device_name, adv_name_len) == 0)
+    if (strstr(name, remote_device_name))
     {
         ESP_LOGI(TAG, "Magicsee R1 device is found; it's BDA is:");
         esp_log_buffer_hex(TAG, scan_rst->bda, ESP_BD_ADDR_LEN);
