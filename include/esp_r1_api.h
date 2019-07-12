@@ -46,12 +46,22 @@ R1_EVENTS_TABLE
 #undef X
 } esp_r1_key_id_t;
 
+typedef enum {
+#define X(name) name##_MASK = (1 << name),
+R1_EVENTS_TABLE
+#undef X
+} esp_r1_key_mask_t;
+
 /**
  * @brief Key state possible values
  */
 typedef enum {
     R1_KEY_RELEASED = 0U,
     R1_KEY_PRESSED  = 1U,
+
+    R1_AXIS_PLUS = 0U,
+    R1_AXIS_CENTER = 1U,
+    R1_AXIS_MINUS = 2U,
 } esp_r1_key_state_t;
 
 /**
