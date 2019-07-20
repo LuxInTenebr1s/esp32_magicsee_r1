@@ -37,7 +37,7 @@ R1_EVENTS_TABLE
 };
 
 static const char *TAG = "R1";
-static const char *remote_device_name = "Magicsee R1";
+static const char *remote_device_name = "ACGAM R1";
 
 static esp_bd_addr_t gl_remote_bda;
 static esp_gatt_if_t gl_gattc_if;
